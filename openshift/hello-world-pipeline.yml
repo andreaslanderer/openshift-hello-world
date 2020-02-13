@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: hello-world-pipeline
+  labels:
+    app: hello-world
+parameters:
+  - description: Git Source Repository
+    name: GIT_SOURCE_URL
+    value: http://bitbucket.vt.ch:7990/scm/dsp/wmw-client-list.git
+    required: true
+  - description: Git Source reference
+    name: GIT_SOURCE_REF
+    value: feature/WMWP-299-switch-wmwp-to-openshift
+    required: true
+
+objects:
+  - apiVersion: v1
+    kind: BuildConfig
+    metadata:
+      name: wmwp-jenkins-pipeline
+    spec:
+      source:
+        type: Git
+        git:
+          uri: ${GIT_SOURCE_URL}
+          ref: ${GIT_SOURCE_REF}
+      strategy:
+        jenkinsPipelineStrategy:
+          jenkinsfilePath: 'jenkinsfile.groovy'
+          env:
+            - name: GIT_SOURCE_URL
+              value: ${GIT_SOURCE_URL}
+            - name: GIT_SOURCE_REF
+              value: ${GIT_SOURCE_REF}
+        type: JenkinsPipeline
