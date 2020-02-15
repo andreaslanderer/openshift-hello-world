@@ -8,9 +8,12 @@ podTemplate(label: label,
                             name: 'maven',
                             image: 'maven:3.3.9-jdk-8-alpine',
                             ttyEnabled: true,
-                            command: 'cat',
-                            args: ['-u root'])
-            ]) {
+                            command: 'cat')
+            ],
+            volumes: [
+                    persistentVolumeClaim(claimName: 'jenkins-maven-cache', mountPath: '/home/jenkins/.m2/repository')
+            ]
+) {
     try {
         node(label) {
             timeout(time: 30, unit: 'MINUTES') {
