@@ -11,6 +11,9 @@ podTemplate(label: label,
                             image: 'maven:3.3.9-jdk-8-alpine',
                             ttyEnabled: true,
                             command: 'cat')
+            ],
+            volumes: [
+                    persistentVolumeClaim(claimName: 'jenkins-maven-cache', mountPath: '/home/jenkins/.m2/repository')
             ]
 ) {
     try {
@@ -28,7 +31,7 @@ podTemplate(label: label,
 
                     stage('build') {
                         sh "ls -al"
-                        sh 'mvn clean package -X'
+                        sh 'mvn -s maven.settings.xml clean package -X'
                     }
                 }
             }
