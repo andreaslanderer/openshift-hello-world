@@ -25,9 +25,9 @@ podTemplate(label: label,
                         sh 'printenv'
                     }
 
-                    stage('checkout') {
-                        checkout scm
-                    }
+//                    stage('checkout') {
+//                        checkout scm
+//                    }
 
                     stage('build') {
                         sh "ls -al"
