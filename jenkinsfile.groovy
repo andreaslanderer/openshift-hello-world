@@ -18,7 +18,7 @@ podTemplate(label: label,
 ) {
     try {
         node(label) {
-            timeout(time: 30, unit: 'MINUTES') {
+            timeout(time: 10, unit: 'MINUTES') {
                 container('maven') {
 
                     stage("environment info") {
@@ -38,9 +38,23 @@ podTemplate(label: label,
                     }
 
                     stage('stash jar') {
-                        sh "target/ && ls -al"
                         stash name: "api", includes: "**/target/*.jar"
                     }
+                }
+            }
+        }
+
+        node {
+            timeout(time: 10, unit: 'MINUTES') {
+
+                stage("environment info") {
+                    sh 'printenv'
+                }
+
+                stage("build docker") {
+                    unstash "api"
+                    // target/hello-world-1.0-SNAPSHOT.jar
+                    sh 'oc help'
                 }
             }
         }
