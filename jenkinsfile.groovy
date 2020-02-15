@@ -25,13 +25,21 @@ podTemplate(label: label,
                         sh 'printenv'
                     }
 
-//                    stage('checkout') {
-//                        checkout scm
-//                    }
+                    stage('checkout') {
+                        checkout scm
+                    }
 
-                    stage('build') {
-                        sh "ls -al"
-                        sh 'mvn -s maven.settings.xml clean package -X'
+                    stage('build and test') {
+                        try {
+                            sh 'mvn -s maven.settings.xml clean package'
+                        } finally {
+                            junit '**/target/surefire-reports/*.xml'
+                        }
+                    }
+
+                    stage('stash jar') {
+                        sh "target/ && ls -al"
+                        stash name: "api", includes: "**/target/*.jar"
                     }
                 }
             }
