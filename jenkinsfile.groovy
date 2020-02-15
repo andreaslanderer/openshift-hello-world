@@ -9,8 +9,19 @@ podTemplate(label: label,
     try {
         node(label) {
             timeout(time: 30, unit: 'MINUTES') {
-                stage("environment info") {
-                    sh 'printenv'
+                container('maven') {
+
+                    stage("environment info") {
+                        sh 'printenv'
+                    }
+
+                    stage('checkout') {
+                        checkout scm
+                    }
+
+                    stage('build') {
+                        sh 'mvn clean package'
+                    }
                 }
             }
         }
