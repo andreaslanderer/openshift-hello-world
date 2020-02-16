@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Template
+metadata:
+  labels:
+    app: hello-world-api-docker
+  name: hello-world-api-docker
+
+objects:
+  - apiVersion: build.openshift.io/v1
+    kind: BuildConfig
+    metadata:
+      labels:
+        app: hello-world-api-docker
+      name: hello-world-api-docker
+    spec:
+      nodeSelector: {}
+      output:
+        to:
+          kind: DockerImage
+          name: hello-world-api
+      postCommit: {}
+      resources:
+        limits:
+          cpu: 400m
+          memory: 2Gi
+      runPolicy: Parallel
+      source:
+        dockerfile: |-
+          FROM openjdk:7
+          COPY target/hello-world-1.0-SNAPSHOT.jar /usr
+          WORKDIR /usr
+          CMD ["java", "-jar", "hello-world-1.0-SNAPSHOT.jar"]
+          type: Docker
+        type: Docker
+      strategy:
+        dockerStrategy:
+          from:
+            kind: ImageStreamTag
+            name: 'openjdk:latest'
+      triggers: []

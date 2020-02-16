@@ -37,8 +37,9 @@ podTemplate(label: label,
                         }
                     }
 
-                    stage('stash jar') {
+                    stage('stash artifacts') {
                         stash name: "api", includes: "**/target/*.jar"
+                        stash name: "osobj", includes: "openshift/**/*"
                     }
                 }
             }
@@ -53,6 +54,8 @@ podTemplate(label: label,
 
                 stage("build docker") {
                     unstash "api"
+                    unstash "osobj"
+                    sh "oc process -f openshift/hello-world-docker-build.yml | oc apply --force -f -"
                     // target/hello-world-1.0-SNAPSHOT.jar
                     sh 'oc help'
                 }
