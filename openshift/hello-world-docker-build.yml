@@ -16,25 +16,20 @@ objects:
       nodeSelector: {}
       output:
         to:
-          kind: DockerImage
-          name: hello-world-api
+          kind: ImageStreamTag
+          name: hello-world:latest
       postCommit: {}
-      resources:
-        limits:
-          cpu: 400m
-          memory: 2Gi
       runPolicy: Parallel
       source:
-        dockerfile: |-
-          FROM openjdk:7
-          COPY target/hello-world-1.0-SNAPSHOT.jar /usr
-          WORKDIR /usr
-          CMD ["java", "-jar", "hello-world-1.0-SNAPSHOT.jar"]
-          type: Docker
-        type: Docker
+        contextDir: /
+        git:
+          uri: https://github.com/andreaslanderer/openshift-hello-world.git
+        type: Git
       strategy:
-        dockerStrategy:
+        sourceStrategy:
           from:
             kind: ImageStreamTag
-            name: 'openjdk:latest'
+            namespace: openshift
+            name: 'java:11'
+        type: Source
       triggers: []
