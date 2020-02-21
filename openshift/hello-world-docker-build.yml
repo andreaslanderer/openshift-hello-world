@@ -13,11 +13,10 @@ objects:
         app: hello-world-api-docker
       name: hello-world-api-docker
     spec:
-      nodeSelector: {}
       output:
         to:
-          kind: ImageStreamTag
-          name: manual-hello-world-git:latest
+          kind: DockerImage
+          name: image-registry.openshift-image-registry.svc:5000/jenkins-test/hello-world-git:latest
       postCommit: {}
       runPolicy: Parallel
       resources:
