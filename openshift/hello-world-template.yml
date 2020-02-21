@@ -39,7 +39,7 @@ objects:
             project: jenkins-test
         spec:
           containers:
-              image: hello-world:latest
+              image: hello-world-git:latest
               imagePullPolicy: Always
               livenessProbe:
                 failureThreshold: 3
@@ -75,41 +75,41 @@ objects:
       test: false
       triggers: []
 
-  ##### Services
-  - apiVersion: v1
-    kind: Service
-    metadata:
-      labels:
-        app: hello-world-api
-        project: jenkins-test
-      name: hello-world-api
-    spec:
-      ports:
-        - name: 8080-tcp
-          port: 8080
-          protocol: TCP
-          targetPort: 8080
-      selector:
-        deploymentconfig: hello-world-api
-      sessionAffinity: None
-      type: ClusterIP
-
-  ##### Routes
-  - apiVersion: v1
-    kind: Route
-    metadata:
-      creationTimestamp: null
-      annotations:
-        haproxy.router.openshift.io/timeout: 60000ms
-      labels:
-        app: hello-world-api
-        project: jenkins-test
-      name: hello-world-api
-    spec:
-      port:
-        targetPort: 8080-tcp
-      tls:
-        termination: edge
-      to:
-        kind: Service
-        name: hello-world-api
+#  ##### Services
+#  - apiVersion: v1
+#    kind: Service
+#    metadata:
+#      labels:
+#        app: hello-world-api
+#        project: jenkins-test
+#      name: hello-world-api
+#    spec:
+#      ports:
+#        - name: 8080-tcp
+#          port: 8080
+#          protocol: TCP
+#          targetPort: 8080
+#      selector:
+#        deploymentconfig: hello-world-api
+#      sessionAffinity: None
+#      type: ClusterIP
+#
+#  ##### Routes
+#  - apiVersion: v1
+#    kind: Route
+#    metadata:
+#      creationTimestamp: null
+#      annotations:
+#        haproxy.router.openshift.io/timeout: 60000ms
+#      labels:
+#        app: hello-world-api
+#        project: jenkins-test
+#      name: hello-world-api
+#    spec:
+#      port:
+#        targetPort: 8080-tcp
+#      tls:
+#        termination: edge
+#      to:
+#        kind: Service
+#        name: hello-world-api
