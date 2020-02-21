@@ -17,18 +17,15 @@ objects:
       output:
         to:
           kind: ImageStreamTag
-          name: hello-world:latest
+          name: manual-hello-world-git:latest
       postCommit: {}
       runPolicy: Parallel
       source:
-        contextDir: /
-        git:
-          uri: https://github.com/andreaslanderer/openshift-hello-world.git
-        type: Git
+        contextDir: .
+        type: Binary
       strategy:
         sourceStrategy:
           from:
             kind: DockerImage
             name: 'java:11'
         type: Source
-      triggers: []
