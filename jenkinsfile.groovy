@@ -57,13 +57,21 @@ podTemplate(label: label,
                 }
 
                 stage("deploy") {
-                    unstash "osobj"
-                    def objects = openshift.process("-f openshift/hello-world-template.yml")
-                    openshift.apply(objects, "--force")
-                    def rm = openshift.selector('dc', "hello-world-api").rollout()
-                    rm.latest()
-                    echo 'Getting rollout status'
-                    rm.status()
+                    openshift.withCluster() {
+                        openshift.withProject() {
+                            unstash "osobj"
+                            sh "pwd"
+                            sh "ls -al"
+                            sh "cd openshift && ls -al"
+                            sh "pwd"
+                            def objects = openshift.process("-f", "openshift/hello-world-template.yml")
+                            openshift.apply(objects, "--force")
+                            def rm = openshift.selector('dc', "hello-world-api").rollout()
+                            rm.latest()
+                            echo 'Getting rollout status'
+                            rm.status()
+                        }
+                    }
                 }
             }
         }
