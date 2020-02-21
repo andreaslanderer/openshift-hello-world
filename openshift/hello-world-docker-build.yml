@@ -28,7 +28,7 @@ objects:
       strategy:
         sourceStrategy:
           from:
-            kind: ImageStreamTag
+            kind: DockerImage
             namespace: openshift
             name: 'java:11'
         type: Source
