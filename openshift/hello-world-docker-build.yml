@@ -20,12 +20,17 @@ objects:
           name: manual-hello-world-git:latest
       postCommit: {}
       runPolicy: Parallel
+      resources:
+        limits:
+          cpu: 400m
+          memory: 0.5Gi
       source:
         contextDir: .
         type: Binary
       strategy:
         sourceStrategy:
+          type: Source
           from:
-            kind: DockerImage
+            kind: ImageStreamTag
+            namespace: openshift
             name: 'java:11'
-        type: Source
