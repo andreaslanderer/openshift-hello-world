@@ -55,6 +55,16 @@ podTemplate(label: label,
                     sh "oc process -f openshift/hello-world-docker-build.yml | oc apply --force -f -"
                     sh "oc start-build hello-world-api-docker --from-file=target/hello-world-1.0-SNAPSHOT.jar --follow --wait"
                 }
+
+                stage("deploy") {
+                    unstash "osobj"
+                    def objects = openshift.process("-f openshift/hello-world-template.yml")
+                    openshift.apply(objects, "--force")
+                    def rm = openshift.selector('dc', "hello-world-api").rollout()
+                    rm.latest()
+                    echo 'Getting rollout status'
+                    rm.status()
+                }
             }
         }
 
