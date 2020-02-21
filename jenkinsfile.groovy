@@ -8,7 +8,7 @@ podTemplate(label: label,
                             image: 'jenkins/jnlp-slave:3.35-5-alpine'),
                     containerTemplate(
                             name: 'maven',
-                            image: 'maven:3.3.9-jdk-8-alpine',
+                            image: 'registry.redhat.io/openshift3/jenkins-agent-maven-35-rhel7',
                             ttyEnabled: true,
                             command: 'cat')
             ],
