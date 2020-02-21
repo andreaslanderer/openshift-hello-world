@@ -31,7 +31,7 @@ podTemplate(label: label,
 
                     stage('build and test') {
                         try {
-                            sh 'mvn -s maven.settings.xml clean package'
+                            sh 'source /usr/local/bin/scl_enable && mvn -s maven.settings.xml clean package'
                         } finally {
                             junit '**/target/surefire-reports/*.xml'
                         }
