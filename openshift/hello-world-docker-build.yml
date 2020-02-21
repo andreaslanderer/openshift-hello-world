@@ -29,7 +29,6 @@ objects:
         sourceStrategy:
           from:
             kind: DockerImage
-            namespace: openshift
             name: 'java:11'
         type: Source
       triggers: []
