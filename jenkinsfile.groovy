@@ -11,9 +11,6 @@ podTemplate(label: label,
                             image: 'registry.redhat.io/openshift3/jenkins-agent-maven-35-rhel7',
                             ttyEnabled: true,
                             command: 'cat')
-            ],
-            volumes: [
-                    persistentVolumeClaim(claimName: 'jenkins-maven-cache', mountPath: '/home/jenkins/.m2/repository')
             ]
 ) {
     try {
